@@ -1,0 +1,29 @@
+def Busca_Largura(model):
+    
+    # Função tem como objetivo realizar a busca em largura para encontrar a solução ótima
+    ## Recebe o modelo Atual
+    ## Retorna o modelo com a solução inteira ótima após o processo de relaxação Linear
+    INF = 99999
+    limitante = -INF # Variavel para guardar o limitante atual
+    Nramificacoes = 0 # Variavel para guardar a quantidade de ramificações realizadas
+    Fronteira = [model] # Fila para guardar os modelos que serão ramificados
+    
+    while Fronteira:
+        
+        # Verificar casos de poda
+        if Bound(Fronteira[0],limitante):
+            Fronteira.pop(0)
+            #Atualiza limitante para o valor da função objetivo do modelo atual
+            limitante = Fronteira[0].objective_value
+            
+            continue
+        else:
+            
+            # Ramificar o modelo e adicionar os novos modelos na fila
+            BranchEsquerda,BranchDireita = Branch(Fronteira[0])
+            Fronteira.append(BranchDireita)
+            Fronteira.append(BranchEsquerda)
+            Nramificacoes += 1
+            
+    print(f"Quantidade de ramificações realizadas: {Nramificacoes}")
+            
